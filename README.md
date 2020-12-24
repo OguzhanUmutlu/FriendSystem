@@ -8,7 +8,7 @@ Now your players can add they friend each other!
 Easy and useful!
 
 # Commands
-/f
+Main command: /friend
 
 Aliases: f
 
