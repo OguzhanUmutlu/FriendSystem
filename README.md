@@ -1,5 +1,6 @@
 # FriendSystem
 [![](https://poggit.pmmp.io/shield.state/Friends)](https://poggit.pmmp.io/p/Friends)
+
 A plugin for PocketMine-MP.
 Now your players can add they friend each other!
 Easy and useful.
