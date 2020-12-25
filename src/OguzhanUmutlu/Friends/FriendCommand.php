@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace OguzhanUmutlu;
+namespace OguzhanUmutlu\Friends;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginIdentifiableCommand;
