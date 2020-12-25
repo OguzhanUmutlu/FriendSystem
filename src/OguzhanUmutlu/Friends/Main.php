@@ -1,5 +1,5 @@
 <?php
-namespace OguzhanUmutlu;
+namespace OguzhanUmutlu\Friends;
 use pocketmine\command\Command;
 use pocketmine\command\CommandExecutor;
 use pocketmine\command\CommandSender;
