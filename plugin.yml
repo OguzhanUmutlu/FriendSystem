@@ -1,6 +1,7 @@
 ---
 name: FriendSystem
-main: OguzhanUmutlu\Main
+main: OguzhanUmutlu\Friends\Main
+author: OguzhanUmutlu
 version: 1.0.0
 api: 3.0.0
 ...
