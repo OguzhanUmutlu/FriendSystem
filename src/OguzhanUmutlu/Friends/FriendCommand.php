@@ -13,7 +13,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
         $this->plugin = $plugin;
         parent::__construct($plugin->messages->getNested("friendcommand.name"), $plugin->messages->getNested("friendcommand.description"), null, $plugin->messages->getNested("friendcommand.aliases"));
         if($plugin->messages->getNested("friendcommand.permission")) {
-            $this->setPermission($plugin->messages->getNested("friendcommand.permission"));
+            $this->setPermission("friends.".$plugin->messages->getNested("friendcommand.permission"));
         }
     }
     public function execute(CommandSender $player, string $commandLabel, array $args) {
