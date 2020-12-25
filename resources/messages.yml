@@ -6,6 +6,7 @@ friendcommand:
   usage: "§cUsage: §7/friend help"
   error-use-ingame: "§c> Use this command in game."
   # false/"permission.name"
+  # Permission will set to friend.YOURPERMISSION if you set the permission
   permission: false
 
   subcommands:
