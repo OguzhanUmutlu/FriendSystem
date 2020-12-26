@@ -67,6 +67,6 @@ class Main extends PluginBase implements Listener {
       $this->config = new Config($this->getDataFolder()."config.yml", Config::YAML, array());
       $this->messages = new Config($this->getDataFolder()."messages.yml", Config::YAML, array());
       $this->data = new Config($this->getDataFolder()."data.yml", Config::YAML, array());
-      $this->getServer()->getCommandMap()->register(strtolower($this->messages->getNested("friendcommand.name")), new FriendCommand($this));
+      $this->getServer()->getCommandMap()->register($this->getName(), new FriendCommand($this));
     }
 }
