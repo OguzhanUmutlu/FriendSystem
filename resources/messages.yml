@@ -9,6 +9,8 @@ friendcommand:
   # Permission will set to friend.YOURPERMISSION if you set the permission
   permission: false
 
+
+  # IF YOU ENABLED FORM IN CONFIG.YML YOU DON'T NEED TO EDIT name, description, usage and aliases UNDER THIS LINE
   subcommands:
     help:
       name: "help"
@@ -24,6 +26,7 @@ friendcommand:
       - i
       error-already-friend: "§c> This player is already your friend."
       error-already-invited: "§c> You are already invited this player."
+      error-not-online: "§c> Player %0 is not online."
       success1: "§a> Player %0 successfully invited."
       success2: "§a> Player %0 sent friend request to you."
     list:
@@ -50,6 +53,7 @@ friendcommand:
       aliases:
       - a
       error-not-invited: "§c> This player is not invited you."
+      error-not-online: "§c> Player %0 is not online."
       success1: "§a> You are accepted %0's friend request."
       success2: "§a> %0 accepted your friend request."
     deny:
@@ -59,6 +63,7 @@ friendcommand:
       aliases:
       - d
       error-not-invited: "§c> This player is not invited you."
+      error-not-online: "§c> Player %0 is not online."
       success1: "§a> You are denied %0's friend request."
       success2: "§a> %0 denied your friend request."
     chat:
@@ -66,8 +71,9 @@ friendcommand:
       description: "Sends private message to friends"
       usage: "§cUsage: §7/friend chat <player> <message>"
       aliases:
-      - c
+      - cs
       error-not-friend: "§c> Player %0 is not your friend."
+      error-not-online: "§c> Player %0 is not online."
       success1: "§a> You to %0: %1"
       success2: "§a> %0 to You: %1"
     teleport:
@@ -77,6 +83,7 @@ friendcommand:
       aliases:
       - tp
       error-not-friend: "§c> Player %0 is not your friend."
+      error-not-online: "§c> Player %0 is not online."
       success1: "§a> Teleported friend named %0."
       success2: "§a> Your friend named %0 teleported to you."
     cancelinvite:
@@ -93,5 +100,47 @@ friendcommand:
       aliases: []
       error-not-invited: "§c> You have no friend requests."
       success: "§a> Your friend requests: %0"
+# IF YOU ENABLED FORM IN CONFIG.YML YOU DON'T NEED TO EDIT name, description, usage and aliases ON THIS LINE
+frienduioptions:
+  back: "Back"
+  exit: "Exit"
+  mainmenu:
+    title: "Friend Menu"
+    content: "Select an action."
+    button-friends: "Manage a friend"
+    button-invite: "Send friend request"
+    button-invites-people: "Waiting friend requests from people\n%0 Requests"
+    button-invites-you: "Waiting friend requests from you\n%0 Requests"
+  friends-menu:
+    title: "Friend Menu > Manage a friend"
+    content: "Select a friend."
+    button-format: "Friend: %0"
+  friendmenu:
+    title: "Friend Menu > %0"
+    content: "Select an action."
+    button-teleport: "Teleport"
+    button-remove: "Remove"
+  send-request-menu:
+    title: "Friend Menu > Send friend request"
+    content: "Select a player."
+    player-format: "%0"
+    button-send: "Send friend request"
+  invites-people-menu:
+    title: "Friend Menu > Waiting friend requests from people"
+    content: "Select a request."
+    button-format: "Request: %0"
+  invite-people-select-menu:
+    title: "Friend Menu > Request %0"
+    content: "Select an action."
+    button-accept: "Accept"
+    button-deny: "Deny"
+  invites-you-menu:
+    title: "Friend Menu > Waiting friend requests from you"
+    content: "Select a request."
+    button-format: "Request: %0"
+  invite-you-select-menu:
+    title: "Friend Menu > Request to %0"
+    content: "Select an action."
+    button-cancel: "Cancel"
 friend-joined: "§7[§a+§7] §aYour friend §b%0 §ajoined to server."
 friend-left: "§7[§c-§7] §cYour friend §b%0 §cleft from server."
