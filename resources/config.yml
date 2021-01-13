@@ -1,2 +1,6 @@
 # Can friends teleport each other?
 friend-tp: false
+
+# Feature - v1.0.2
+# If you want to add friend form set this true
+friendui: true
