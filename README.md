@@ -37,8 +37,7 @@ invites - Shows your friend requests
 
 # TODO
 
-- Forms will be added in 1 day.
-- Some bugfixes.
+- (v1.0.5) Bug: If someone sends friend request to other one. And if other one sends too and if someone accepts. There is still a request on first player.
 
 # Reporting Bugs
 
@@ -47,7 +46,6 @@ Enter this web site: https://github.com/OguzhanUmutlu/FriendSystem/issues
 # Changelog
 
 v1.0.0 - Added main things.
-NOW PLUGIN IS 1.0.0, IN THIS DAY OR TOMORROW
 
 v1.0.1 - Bugfix: There weren't not-online message
 
