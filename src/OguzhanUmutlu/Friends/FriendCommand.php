@@ -35,6 +35,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
           }
         }
       });
+        
       $messages = $this->plugin->messages;
       $form->setTitle($messages->getNested("frienduioptions.mainmenu.title"));
       $form->setContent($messages->getNested("frienduioptions.mainmenu.content"));
