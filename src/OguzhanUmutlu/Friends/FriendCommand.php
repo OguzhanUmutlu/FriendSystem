@@ -28,10 +28,10 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
             $this->sendRequestMenu($player);
           }
           if($data == 3) {
-            $this->invitesPeopleMenu();
+            $this->invitesPeopleMenu($player);
           }
           if($data == 4) {
-            $this->invitesYouMenu();
+            $this->invitesYouMenu($player);
           }
         }
       });
@@ -41,8 +41,14 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
       $form->addButton($messages->getNested("frienduioptions.exit"));
       $form->addButton($messages->getNested("frienduioptions.mainmenu.button-friends"));
       $form->addButton($messages->getNested("frienduioptions.mainmenu.button-invite"));
-      $form->addButton($messages->getNested("frienduioptions.mainmenu.button-invites-people"));
-      $form->addButton($messages->getNested("frienduioptions.mainmenu.button-invites-you"));
+      $sayi = 0;
+      foreach(array_keys($this->plugin->data->getNested("invites") ?? []) as $pp) {
+        if($pp != $player->getName() && in_array($player->getName(),$this->plugin->data->getNested("invites")[$pp])) {
+          $sayi++;
+        }
+      }
+      $form->addButton(str_replace("%0", count($this->plugin->data->getNested("invites.".$player->getName()) ?? []), $messages->getNested("frienduioptions.mainmenu.button-invites-people")));
+      $form->addButton(str_replace("%0", $sayi, $messages->getNested("frienduioptions.mainmenu.button-invites-you")));
       $form->sendToPlayer($player);
       return $form;
     }
@@ -55,6 +61,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
           if($data > 1) {
             $friend = $this->plugin->getArklar($player)[$data-2];
             $this->friendMenu($player,$friend);
+            $this->plugin->getLogger($friend);
           }
         }
       });
@@ -64,13 +71,13 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
       $form->addButton($messages->getNested("frienduioptions.exit"));
       $form->addButton($messages->getNested("frienduioptions.back"));
       foreach($this->plugin->getArklar($player) as $friend) {
-        $form->addButton(str_replace("%0", $friend, $messages->getNested("frienduioptions.friends-menu.button-format")));
+        $form->addButton($friend);
       }
       $form->sendToPlayer($player);
       return $form;
     }
     public function friendMenu(Player $player, string $friend) {
-      $form = new SimpleForm(function (Player $player, int $data = null) {
+      $form = new SimpleForm(function (Player $player, int $data = null) use ($friend) {
         $messages = $this->plugin->messages;
         if($data != null) {
           if($data == 1) {
@@ -140,12 +147,16 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
           if($data > 1) {
             $liste = [];
             foreach($this->plugin->getServer()->getOnlinePlayers() as $pp) {
-              if(!in_array($pp, $this->plugin->getArklar($player)) && $pp != $player->getName()) {
-                array_push($pp,$liste);
+              if(!in_array($pp->getName(), $this->plugin->getArklar($player)) && $pp->getName() != $player->getName()) {
+                array_push($liste,$pp->getName());
               }
             }
             $friend = $liste[$data-2];
             $messages = $this->plugin->messages;
+            if(!$this->plugin->getServer()->getPlayer($friend)) {
+                $player->sendMessage($messages->getNested("friendcommand.subcommands.invite.error-not-online"));
+                return;
+            }
             if(in_array($this->plugin->getServer()->getPlayer($friend)->getName(), $this->plugin->getArklar($player))) {
                 $player->sendMessage($messages->getNested("friendcommand.subcommands.invite.error-already-friend"));
                 return;
@@ -177,8 +188,8 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
       $form->addButton($messages->getNested("frienduioptions.exit"));
       $form->addButton($messages->getNested("frienduioptions.back"));
       foreach($this->plugin->getServer()->getOnlinePlayers() as $pp) {
-        if(!in_array($pp, $this->plugin->getArklar($player)) && $pp != $player->getName()) {
-          $form->addButton(str_replace("%0", $pp, $messages->getNested("frienduioptions.send-request-menu.player-format")));
+        if(!in_array($pp->getName(), $this->plugin->getArklar($player)) && $pp->getName() != $player->getName()) {
+          $form->addButton($pp->getName());
         }
       }
       $form->sendToPlayer($player);
@@ -193,7 +204,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
           if($data > 1) {
             $liste = [];
             foreach($this->plugin->data->getNested("invites.".$player->getName()) as $pp) {
-              array_push($pp,$liste);
+              array_push($liste,$pp);
             }
             $friend = $liste[$data-2];
             $this->invitePeopleSelectMenu($player,$friend);
@@ -205,14 +216,14 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
       $form->setContent($messages->getNested("frienduioptions.invites-people-menu.content"));
       $form->addButton($messages->getNested("frienduioptions.exit"));
       $form->addButton($messages->getNested("frienduioptions.back"));
-      foreach($this->plugin->data->getNested("invites.".$player->getName()) as $x) {
-        $form->addButton(str_replace("%0", $x, $messages->getNested("frienduioptions.invites-people-menu.button-format")));
+      foreach(($this->plugin->data->getNested("invites.".$player->getName()) ?? []) as $x) {
+        $form->addButton($x);
       }
       $form->sendToPlayer($player);
       return $form;
     }
     public function invitePeopleSelectMenu(Player $player,$invite) {
-      $form = new SimpleForm(function (Player $player, int $data = null) {
+      $form = new SimpleForm(function (Player $player, int $data = null) use ($invite) {
         if($data != null) {
           if($data == 1) {
             $this->invitesPeopleMenu($player);
@@ -267,7 +278,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
         }
       });
       $messages = $this->plugin->messages;
-      $form->setTitle($messages->getNested("frienduioptions.invite-people-select-menu.title"));
+      $form->setTitle(str_replace("%0", $friend, $messages->getNested("frienduioptions.invite-people-select-menu.title")));
       $form->setContent($messages->getNested("frienduioptions.invite-people-select-menu.content"));
       $form->addButton($messages->getNested("frienduioptions.exit"));
       $form->addButton($messages->getNested("frienduioptions.back"));
@@ -284,11 +295,9 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
           }
           if($data > 1) {
             $liste = [];
-            foreach($this->plugin->data->getNested("invites") as $pp) {
-              if(array_search($pp, $this->plugin->data->getNested("invites")) != $player->getName()) {
-                foreach($pp as $invt) {
-                  array_push($invt,$liste);
-                }
+            foreach(array_keys($this->plugin->data->getNested("invites") ?? []) as $pp) {
+              if($pp != $player->getName() && in_array($player->getName(),$this->plugin->data->getNested("invites")[$pp])) {
+                array_push($liste,$pp);
               }
             }
             $friend = $liste[$data-2];
@@ -301,37 +310,35 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
       $form->setContent($messages->getNested("frienduioptions.invites-you-menu.content"));
       $form->addButton($messages->getNested("frienduioptions.exit"));
       $form->addButton($messages->getNested("frienduioptions.back"));
-      foreach($this->plugin->data->getNested("invites") as $pp) {
-        if(array_search($pp, $this->plugin->data->getNested("invites")) != $player->getName()) {
-          foreach($pp as $invt) {
-            $form->addButton(str_replace("%0", $invt, $messages->getNested("frienduioptions.invites-you-menu.button-format")));
-          }
+      foreach(array_keys($this->plugin->data->getNested("invites") ?? []) as $pp) {
+        if($pp != $player->getName() && in_array($player->getName(),$this->plugin->data->getNested("invites")[$pp])) {
+          $form->addButton($pp);
         }
       }
       $form->sendToPlayer($player);
       return $form;
     }
     public function inviteYouSelectMenu(Player $player,$invite) {
-      $form = new SimpleForm(function (Player $player, int $data = null) {
+      $form = new SimpleForm(function (Player $player, int $data = null) use ($invite) {
         if($data != null) {
           if($data == 1) {
-            $this->invitesPeopleMenu($player);
+            $this->invitesYouMenu($player);
           }
           $messages = $this->plugin->messages;
           if($data == 2) {
-            if(!in_array($player->getName(), $this->plugin->data->getNested("invites.".$p->getServer()->getPlayer($invite)->getName()))) {
+            if(!in_array($player->getName(), $this->plugin->data->getNested("invites.".( $this->plugin->getServer()->getPlayer($invite) ? $this->plugin->getServer()->getPlayer($invite)->getName() : $invite )))) {
                 $player->sendMessage($messages->getNested("friendcommand.subcommands.cancelinvite.error-not-invited"));
                 return;
             }
             $yyeni = [];
-            foreach($data->getNested("invites.".$p->getServer()->getPlayer($invite)->getName()) as $x) {
+            foreach($this->plugin->data->getNested("invites.".( $this->plugin->getServer()->getPlayer($invite) ? $this->plugin->getServer()->getPlayer($invite)->getName() : $invite )) as $x) {
                 if($x != $player->getName()) {
                     array_push($yyeni, $x);
                 }
             }
-            $data->setNested("invites.".$p->getServer()->getPlayer($invite)->getName(), $yyeni);
-            $data->save();
-            $data->reload();
+            $this->plugin->data->setNested("invites.".( $this->plugin->getServer()->getPlayer($invite) ? $this->plugin->getServer()->getPlayer($invite)->getName() : $invite ), $yyeni);
+            $this->plugin->data->save();
+            $this->plugin->data->reload();
             $player->sendMessage($messages->getNested("friendcommand.subcommands.cancelinvite.success"));
           }
         }
@@ -378,6 +385,10 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
         } else if($args[0] == $messages->getNested("friendcommand.subcommands.invite.name") || in_array($args[0], $messages->getNested("friendcommand.subcommands.invite.aliases"))) {
             if(count($args) != 2 || !$p->getServer()->getPlayer($args[1])) {
                 $player->sendMessage($messages->getNested("friendcommand.subcommands.invite.usage"));
+                return;
+            }
+            if(!$p->getServer()->getPlayer($args[1])) {
+                $player->sendMessage($messages->getNested("friendcommand.subcommands.invite.error-not-online"));
                 return;
             }
             if(in_array($p->getServer()->getPlayer($args[1])->getName(), $p->getArklar($player))) {
