@@ -12,6 +12,9 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 use pocketmine\{Server,Player};
+
+use jojoe77777\FormAPI\FormAPI;
+
 class Main extends PluginBase implements Listener {
     public function katilmaEvent(PlayerJoinEvent $event) {
       $player = $event->getPlayer();
@@ -67,7 +70,7 @@ class Main extends PluginBase implements Listener {
       $this->config = new Config($this->getDataFolder()."config.yml", Config::YAML, array());
       $this->messages = new Config($this->getDataFolder()."messages.yml", Config::YAML, array());
       $this->data = new Config($this->getDataFolder()."data.yml", Config::YAML, array());
-      $this->formapi = $this->getServer()->getPluginManager()->getPlugin("FormAPI");
+      $this->formapi = class_exists(FormAPI::class);
       $this->getServer()->getCommandMap()->register(strtolower($this->messages->getNested("friendcommand.name")), new FriendCommand($this));
       if($this->config->getNested("friendui") == true) {
         if(!$this->formapi) {
