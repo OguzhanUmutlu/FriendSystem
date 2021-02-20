@@ -2,7 +2,7 @@ friendcommand:
   name: "friend"
   description: "Manage your friends"
   aliases:
-  - f
+  - fr
   usage: "§cUsage: §7/friend help"
   error-use-ingame: "§c> Use this command in game."
   # false/"permission.name"
