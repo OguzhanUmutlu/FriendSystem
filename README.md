@@ -13,7 +13,7 @@ Easy and useful!
 # Commands
 Main command: /friend
 
-Aliases: f
+Aliases: fr
 
 Sub commands:
 
