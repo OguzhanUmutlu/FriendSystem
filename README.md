@@ -37,7 +37,7 @@ invites - Shows your friend requests
 
 # TODO
 
-- (v1.0.5) Bug: If someone sends friend request to other one. And if other one sends too and if someone accepts. There is still a request on first player.
+- (v1.0.6) Bug: If someone sends friend request to other one. And if other one sends too and if someone accepts. There is still a request on first player.
 
 # Reporting Bugs
 
