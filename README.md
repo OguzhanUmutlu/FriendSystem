@@ -54,3 +54,5 @@ v1.0.2 - Added form option ~ Requested by MineGuy112
 v1.0.3 - Bugfix: When someone teleports to him friend it were just teleporting to coordinates(not world)
 
 v1.0.4 - Bugfix: Some messages were wrong typed
+
+v1.0.5 - f aliase changed to fr because of Factions plugins
