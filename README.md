@@ -37,7 +37,7 @@ invites - Shows your friend requests
 
 # TODO
 
-- (v1.0.6) Bug: If someone sends friend request to other one. And if other one sends too and if someone accepts. There is still a request on first player.
+- Bug: If someone sends friend request to other one. And if other one sends too and if someone accepts. There is still a request on first player.
 
 # Help/Suggestion/Bug Report
 
@@ -62,3 +62,5 @@ v1.0.3 - Bugfix: When someone teleports to him friend it were just teleporting t
 v1.0.4 - Bugfix: Some messages were wrong typed
 
 v1.0.5 - f aliase changed to fr because of Factions plugins
+
+v1.0.6 - Bugfix.
