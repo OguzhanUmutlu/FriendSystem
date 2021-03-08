@@ -444,7 +444,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
             $a = [];
             foreach($data->get("friends") as $x) {
                 if(!($x[0] == $player->getName() && $x[1] == $args[1]) && !($x[1] == $player->getName() && $x[0] == $args[1])) {
-                    array_push(($a ? $a : []), $x);
+                    array_push($a, $x);
                 }
             }
             $data->setNested("friends", $a);
