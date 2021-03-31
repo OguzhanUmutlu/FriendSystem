@@ -16,6 +16,7 @@ use pocketmine\{Server,Player};
 use jojoe77777\FormAPI\FormAPI;
 
 class Main extends PluginBase implements Listener {
+    static $instance;
     public function katilmaEvent(PlayerJoinEvent $event) {
       $player = $event->getPlayer();
       $data = $this->data;
@@ -50,7 +51,7 @@ class Main extends PluginBase implements Listener {
         }
       }
     }
-    public function getArklar(Player $player): array {
+    public function getFriends(Player $player): array {
       $arklar = [];
       foreach($this->data->get("friends") as $x) {
         if($x[0] == $player->getName()) {
@@ -60,6 +61,15 @@ class Main extends PluginBase implements Listener {
         }
       }
       return $arklar;
+    }
+    public function getFriendRequests(Player $player): array {
+      if(!$this->data->getNested("invites.".$player->getName())) {
+        return [];
+      }
+      return $this->data->getNested("invites.".$player->getName());
+    }
+    static function getInstance() {
+        return self::$instance;
     }
     public function onEnable() {
       $this->saveResource("config.yml");
@@ -78,5 +88,6 @@ class Main extends PluginBase implements Listener {
           $this->formapi = null;
         }
       }
+      self::$instance = $this;
     }
 }
