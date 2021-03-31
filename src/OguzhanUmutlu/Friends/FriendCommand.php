@@ -279,7 +279,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
         }
       });
       $messages = $this->plugin->messages;
-      $form->setTitle(str_replace("%0", $friend, $messages->getNested("frienduioptions.invite-people-select-menu.title")));
+      $form->setTitle(str_replace("%0", $invite, $messages->getNested("frienduioptions.invite-people-select-menu.title")));
       $form->setContent($messages->getNested("frienduioptions.invite-people-select-menu.content"));
       $form->addButton($messages->getNested("frienduioptions.exit"));
       $form->addButton($messages->getNested("frienduioptions.back"));
