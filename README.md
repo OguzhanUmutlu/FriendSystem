@@ -35,6 +35,17 @@ cancelinvite - Cancel your friend request
 
 invites - Shows your friend requests
 
+# API
+
+Using plugin:
+
+`use OguzhanUmutlu\Friends\Main as FriendsMain;`
+
+Current functions:
+
+`FriendsMain::getInstance()->getFriends($player);
+FriendsMain::getInstance()->getFriendRequests($player);`
+
 # TODO
 
 - Bug: If someone sends friend request to other one. And if other one sends too and if someone accepts. There is still a request on first player.
@@ -64,3 +75,5 @@ v1.0.4 - Bugfix: Some messages were wrong typed
 v1.0.5 - f aliase changed to fr because of Factions plugins
 
 v1.0.6 - Bugfix.
+
+v1.0.7 - New API!
