@@ -60,7 +60,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
             $this->mainMenu($player);
           }
           if($data > 1) {
-            $friend = $this->plugin->getArklar($player)[$data-2];
+            $friend = $this->plugin->getFriends($player)[$data-2];
             $this->friendMenu($player,$friend);
             $this->plugin->getLogger($friend);
           }
@@ -71,7 +71,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
       $form->setContent($messages->getNested("frienduioptions.friends-menu.content"));
       $form->addButton($messages->getNested("frienduioptions.exit"));
       $form->addButton($messages->getNested("frienduioptions.back"));
-      foreach($this->plugin->getArklar($player) as $friend) {
+      foreach($this->plugin->getFriends($player) as $friend) {
         $form->addButton($friend);
       }
       $form->sendToPlayer($player);
@@ -91,7 +91,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
                   $player->sendMessage(str_replace("%0", $this->plugin->getServer()->getPlayer($friend)->getName(), $messages->getNested("friendcommand.subcommands.teleport.error-not-online")));
                   return;
               }
-              if(!in_array($this->plugin->getServer()->getPlayer($friend)->getName(), $this->plugin->getArklar($player))) {
+              if(!in_array($this->plugin->getServer()->getPlayer($friend)->getName(), $this->plugin->getFriends($player))) {
                   $player->sendMessage(str_replace("%0", $this->plugin->getServer()->getPlayer($friend)->getName(), $messages->getNested("friendcommand.subcommands.teleport.error-not-friend")));
                   return;
               }
@@ -107,7 +107,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
             if($this->plugin->getServer()->getPlayer($friend)) {
                 $friend = $this->plugin->getServer()->getPlayer($friend)->getName();
             }
-            if(!in_array($friend, $this->plugin->getArklar($player))) {
+            if(!in_array($friend, $this->plugin->getFriends($player))) {
                 $player->sendMessage(str_replace("%0", $friend, $messages->getNested("friendcommand.subcommands.remove.error-not-friend")));
                 return;
             }
@@ -148,7 +148,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
           if($data > 1) {
             $liste = [];
             foreach($this->plugin->getServer()->getOnlinePlayers() as $pp) {
-              if(!in_array($pp->getName(), $this->plugin->getArklar($player)) && $pp->getName() != $player->getName()) {
+              if(!in_array($pp->getName(), $this->plugin->getFriends($player)) && $pp->getName() != $player->getName()) {
                 array_push($liste,$pp->getName());
               }
             }
@@ -158,7 +158,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
                 $player->sendMessage($messages->getNested("friendcommand.subcommands.invite.error-not-online"));
                 return;
             }
-            if(in_array($this->plugin->getServer()->getPlayer($friend)->getName(), $this->plugin->getArklar($player))) {
+            if(in_array($this->plugin->getServer()->getPlayer($friend)->getName(), $this->plugin->getFriends($player))) {
                 $player->sendMessage($messages->getNested("friendcommand.subcommands.invite.error-already-friend"));
                 return;
             }
@@ -189,7 +189,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
       $form->addButton($messages->getNested("frienduioptions.exit"));
       $form->addButton($messages->getNested("frienduioptions.back"));
       foreach($this->plugin->getServer()->getOnlinePlayers() as $pp) {
-        if(!in_array($pp->getName(), $this->plugin->getArklar($player)) && $pp->getName() != $player->getName()) {
+        if(!in_array($pp->getName(), $this->plugin->getFriends($player)) && $pp->getName() != $player->getName()) {
           $form->addButton($pp->getName());
         }
       }
@@ -392,7 +392,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
                 $player->sendMessage($messages->getNested("friendcommand.subcommands.invite.error-not-online"));
                 return;
             }
-            if(in_array($p->getServer()->getPlayer($args[1])->getName(), $p->getArklar($player))) {
+            if(in_array($p->getServer()->getPlayer($args[1])->getName(), $p->getFriends($player))) {
                 $player->sendMessage($messages->getNested("friendcommand.subcommands.invite.error-already-friend"));
                 return;
             }
@@ -415,13 +415,13 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
             $player->sendMessage(str_replace("%0", $p->getServer()->getPlayer($args[1])->getName(), $messages->getNested("friendcommand.subcommands.invite.success1")));
             $p->getServer()->getPlayer($args[1])->sendMessage(str_replace("%0", $player->getName(), $messages->getNested("friendcommand.subcommands.invite.success2")));
         } else if($args[0] == $messages->getNested("friendcommand.subcommands.list.name") || in_array($args[0], $messages->getNested("friendcommand.subcommands.list.aliases"))) {
-            if(count($p->getArklar($player)) == 0) {
+            if(count($p->getFriends($player)) == 0) {
                 $player->sendMessage($messages->getNested("friendcommand.subcommands.list.error-no-friends"));
                 return;
             } else {
                 $str = "";
-                foreach($p->getArklar($player) as $x) {
-                    if(array_search($x, $p->getArklar($player)) == count($p->getArklar($player))-1) {
+                foreach($p->getFriends($player) as $x) {
+                    if(array_search($x, $p->getFriends($player)) == count($p->getFriends($player))-1) {
                         $str = $str . $x;
                     } else {
                         $str = $str . $x . ", ";
@@ -437,7 +437,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
             if($p->getServer()->getPlayer($args[1])) {
                 $args[1] = $p->getServer()->getPlayer($args[1])->getName();
             }
-            if(!in_array($args[1], $p->getArklar($player))) {
+            if(!in_array($args[1], $p->getFriends($player))) {
                 $player->sendMessage(str_replace("%0", $args[1], $messages->getNested("friendcommand.subcommands.remove.error-not-friend")));
                 return;
             }
@@ -515,7 +515,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
                 $player->sendMessage(str_replace("%0", $p->getServer()->getPlayer($args[1])->getName(), $messages->getNested("friendcommand.subcommands.chat.error-not-online")));
                 return;
             }
-            if(!in_array($p->getServer()->getPlayer($args[1])->getName(), $p->getArklar($player))) {
+            if(!in_array($p->getServer()->getPlayer($args[1])->getName(), $p->getFriends($player))) {
                 $player->sendMessage(str_replace("%0", $p->getServer()->getPlayer($args[1])->getName(), $messages->getNested("friendcommand.subcommands.chat.error-not-friend")));
                 return;
             }
@@ -534,7 +534,7 @@ class FriendCommand extends Command implements PluginIdentifiableCommand {
                 $player->sendMessage(str_replace("%0", $p->getServer()->getPlayer($args[1])->getName(), $messages->getNested("friendcommand.subcommands.teleport.error-not-online")));
                 return;
             }
-            if(!in_array($p->getServer()->getPlayer($args[1])->getName(), $p->getArklar($player))) {
+            if(!in_array($p->getServer()->getPlayer($args[1])->getName(), $p->getFriends($player))) {
                 $player->sendMessage(str_replace("%0", $p->getServer()->getPlayer($args[1])->getName(), $messages->getNested("friendcommand.subcommands.teleport.error-not-friend")));
                 return;
             }
